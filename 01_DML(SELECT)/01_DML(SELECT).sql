@@ -434,17 +434,52 @@ WHERE HIRE_DATE >= '95/01/01' AND DEPT_CODE IS NOT NULL;
 -- (사번, 사원명, 급여, 입사일, 보너스) 조회
 SELECT EMP_ID, EMP_NAME, SALARY, HIRE_DATE, BONUS
 FROM EMPLOYEE
-WHERE (SALARY BETWEEN 2000000 AND 5000000)AND (HIRE_DATE >= '01/01/01') AND (BONUS IS NULL);
+WHERE (SALARY BETWEEN 2000000 AND 5000000) AND (HIRE_DATE >= '01/01/01') AND (BONUS IS NULL);
 -- 7행
 
 
 -- 5. 보너스포함연봉이 NULL이 아니고 이름에 '하'가 포함되어있는 사원들의 (사번, 사원명, 급여, 보너스포함연봉) 조회 (별칭부여)
-SELECT EMP_ID AS "사번", EMP_NAME AS "사원명", SALARY AS "급여", ((SALARY + BONUS *SALARY)*12) AS "보너스포함연봉"
+SELECT EMP_ID AS "사번", EMP_NAME AS "사원명", SALARY AS "급여",'원', ((SALARY + BONUS *SALARY)*12) AS "보너스포함연봉 ,", '원' 
 FROM EMPLOYEE
 WHERE (BONUS IS NOT NULL) AND EMP_NAME LIKE '%하%';
 --2행
 
+-------------------------------------------------------------------------------------------------------------
+SELECT EMP_ID, EMP_NAME, SALARY --3
+FROM EMPLOYEE -- 1
+WHERE DEPT_CODE IS NULL; --2
+--===========================================================================================================
 
+/*
+    < ORDER BY 절 >
+    가장 마지막줄에 작성! 뿐만 아니라 실행순서 또한 마지막에 실행
+    
+    [표현법]
+    SELECT 조회할컬럼1, 컬럼2, 컬럼3, 산술연산식 AS "별칭", ....
+    FROM 조회하고자하는 테이블명
+    WHERE 조건식
+    ORDER BY 정렬하고싶은컬럼 | 별칭 | 컬럼순번   [ASC | DESC] [NULLS FIRST | NULLS LAST] --ASC : 오름차순(디폴트값) --DESC : 내림차순
+  
+    - ASC : 오름차순 정렬 (생략시 기본값)
+    - DESC : 내림차순 정렬 
+    
+    - NULLS FIRST : 정렬하고자 하는 컬럼값에 NULL이 있을경우 해당 데이터를 맨 앞에 배치 (생략시 DESC일때의 기본값)
+    - NULLS LAST : 정렬하고자 하는 컬럼값에 NULL이 있을경우 해당 데이터를 맨 뒤에 배치 (생략시 ASC일때의 기본값)
+*/
 
+SELECT *
+FROM EMPLOYEE
+-- ORDER BY BONUS; -- 오름차순이 디폴트 값이라서 보너스는 오름차순으로 정렬된다.
+-- ORDER BY BONUS ASC; -- 오름차순 정렬일 때 기본적으로 NULLS LAST구나!
+-- ORDER BY BONUS ASC NULLS FIRST; -- NULL값을 먼저 정렬한다음에 오름차순 정렬
+-- ORDER BY BONUS DESC ; -- 내림차순 정렬일 때 기본적으로 NULLS FIRST구나! --NULL값을 먼저 정렬한다음 내림차순 정렬 (DESC)
+ORDER BY BONUS DESC, SALARY ASC; -- 정렬기준 여러개 제시 가능 (첫번째 기준의 컬럼값이 동일할 경우 두번째 기준 컬럼가지고 정렬)
+
+-- 전 사원의 사원명, 연봉 조회 (이때 연봉별 내림차순 정렬 조회)
+SELECT EMP_NAME, SALARY*12 AS "연봉"
+FROM EMPLOYEE
+-- ORDER BY SALARY*12 DESC;
+-- ORDER BY "연봉" DESC; -- 별칭 사용 가능
+ORDER BY 2 DESC; -- 컬럼순번 사용 가능 (컬럼개수보다 큰 숫자 안됨)
 
 
