@@ -99,9 +99,9 @@ FROM EMPLOYEE;
 -- 21. EMPLOYEE테이블에서 직원 명, 부서코드, 생년월일, 나이(만) 조회
 -- 단, 생년월일은 주민번호에서 추출해서 00년 00월 00일로 출력되게 하며
 -- 나이는 주민번호에서 출력해서 날짜데이터로 변환한 다음 계산)
-SELECT EMP_NAME, DEPT_CODE, SUBSTR(EMP_NO,1,2)||'년', SUBSTR(EMP_NO,3,2)||'월',
-                SUBSTR(EMP_NO,5,2)||'일' ,
-              -- EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM (TO_DATE(SUBSTR(EMP_NO,1,6)))) AS " 나이"
+SELECT EMP_NAME, DEPT_CODE, SUBSTR(EMP_NO,1,2)||'년' AS "생년", SUBSTR(EMP_NO,3,2)||'월' AS "월",
+                SUBSTR(EMP_NO,5,2)||'일' AS "일",
+              (EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM (TO_DATE(SUBSTR(EMP_NO,1,6)))) )AS " 나이"
                 FROM EMPLOYEE;
                  --TO_DATE((TO_NUMBER(SUBSTR(EMP_NO,1,6))),'RRMMDD')
 
