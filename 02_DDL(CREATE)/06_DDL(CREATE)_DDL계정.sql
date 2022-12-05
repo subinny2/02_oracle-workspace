@@ -187,6 +187,207 @@ SELECT * FROM MEM_UNIQUE;
 
 INSERT INTO MEM_UNIQUE VALUES(1,'user01', 'pass01', '손흥민', null, null, null);
 INSERT INTO MEM_UNIQUE VALUES(2, 'user01', 'pass02', '황희찬', null, null, null);
+-- ORA-00001: unique constraint (DDL.SYS_C007059) violated
+-- unique 제약조건에 위배되었음!!! insert 실패!!
+--> 오류 구문을 제약조건명으로 알려줌!! (특정 컬럼에 어떤 문제가 있는지 상세히 알려주지는 않음!!)
+--> 쉽게 파악하기가 어려움!!
+--> 제약조건 부여시 제약조건명 지정해주지 않으면 시스템에서 임의의 제약조건명을 부여해버린다.
+
+/*
+    * 제약조건 부여시 제약조건명까지 지어주는 방법
+    
+    > 컬럼레벨 방식
+    CREATE TABLE 테이블명(
+        컬럼명 자료형 [CONSTRAINT 제약조건명] 제약조건,
+        컬럼명 자료형
+    );
+    
+    
+    > 테이블레벨 방식
+      CREATE TABLE 테이블명(
+        컬럼명 자료형 ,
+        컬럼명 자료형
+        [CONSTRAINT 제약조건명] 제약조건(컬럼명)
+    );
+
+*/
+DROP TABLE MEM_UNIQUE;
+
+CREATE TABLE MEM_UNIQUE(
+    MEM_NO NUMBER CONSTRAINT MEMNO_NN NOT NULL,
+    MEM_ID VARCHAR2(20) CONSTRAINT MEMID_NN NOT NULL,
+    MEM_PWD VARCHAR2(20) CONSTRAINT MEMPWD_NN NOT NULL,
+    MEM_NAME VARCHAR2(20) CONSTRAINT EMENAME_NN NOT NULL,
+    GENDER CHAR(3),
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50),
+    CONSTRAINT MEMID_UQ UNIQUE(MEM_ID) --> 테이블 레벨 방식
+);
+
+SELECT * FROM MEM_UNIQUE;
+
+INSERT INTO MEM_UNIQUE VALUES(1,'user01', 'pass01', '손흥민', null, null, null);
+INSERT INTO MEM_UNIQUE VALUES(2, 'user01', 'pass02', '황희찬', null, null, null);
+-- ORA-00001: unique constraint (DDL.MEMID_UQ) violated -- 위배되다.
+INSERT INTO MEM_UNIQUE VALUES(2, 'user02', 'pass02', '황희찬', null, null, null);
+INSERT INTO MEM_UNIQUE VALUES(3, 'user03', 'pass03', '이강인', 'ㄴ', null, null);
+-- 성별에 유효한 값이 아닌게 들어와도 잘 INSERT 된다... => 이러면 안됨!!!
+
+--------------------------------------------------------------------------------
+/*
+    * CHECK(조건식) 제약조건
+    해당 컬럼에 들어올 수 있는 값에 대한 조건을 제시해둘수 있음!
+    해당 조건에 만족하는 데이터값만 담길 수 있음.
+*/
+
+CREATE TABLE MEM_CHECK(
+    MEM_NO NUMBER NOT NULL,
+    MEM_ID VARCHAR2(20) NOT NULL UNIQUE,
+    MEM_PWD VARCHAR2(20) NOT NULL,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    GENDER CHAR(3) CHECK(GENDER IN ('남', '여')), -- 컬럼레벨방식
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50)
+    -- CHECK(GENDER IN ('남', '여')) -- 테이블 레벨 방식
+);
+
+SELECT * FROM MEM_CHECK;
+
+INSERT INTO MEM_CHECK
+VALUES(1, 'user01', 'pass01', '손흥민', '남', null, null);
+INSERT INTO MEM_CHECK
+VALUES(2, 'user02', 'pass02', '황희찬', 'ㅋ', null, null);
+-- ORA-02290: check constraint (DDL.SYS_C007069) violated
+-- CHECK 제약조건에 위배 되었기 때문에 오류 발생
+-- 만일, GENDER 컬럼에 데이터 값을 넣고자 한다면 CHECK 제약조건에 만족하는 값을 넣어야됨!!
+-- 한글자만 사용할때 체크조건을 많이 사용함.
+INSERT INTO MEM_CHECK
+VALUES(2, 'user02', 'pass02', '황희찬', null , null, null);
+-- NOT NULL이 아니면 NULL도 가능하긴함!!
+-- 체크조건일뿐 NULL값은 들어갈수있음!!! CHECK 조건만 맞춰주면 된다.
+
+INSERT INTO MEM_CHECK
+VALUES(2, 'user03', 'pass03', '이강인', null , null, null);
+--------------------------------------------------------------------------------
+/*
+     * PRIMARY KEY(기본키) 제약조건
+     테이블에서 각 행들을 식별하기 위해 사용될 컬럼에  부여하는 제약 조건 (식별자의 역할)
+     
+     EX) 학번, 회원번호, 사원번호(EMP_ID), 부서코드(DEPT_ID), 직급코드(JOB_CODE), 주문번호, 예약번호, 운송장 번호, ....
+     
+     PRIMARY KEY 제약조건을 부여하면 그 컬럼에 자동으로 NOT NULL + UNIQUE 제약조건을 가진다.
+     
+     * 유의사항 : 한 테이블당 오로지!!!! 한 개만 설정 가능
+     
+*/
+DROP TABLE MEM_PRI;
+CREATE TABLE MEM_PRI(
+    MEM_NO NUMBER CONSTRAINT MEMNO_PK PRIMARY KEY, -- 컬럼레벨방식
+    MEM_ID VARCHAR2(20) NOT NULL UNIQUE,
+    MEM_PWD VARCHAR2(20) NOT NULL,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    GENDER CHAR(3) CHECK(GENDER IN ('남','여')),
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50)
+    -- CONSTRAINT MEMNO_PK PRIMARY KEY(MEM_NO)-- 테이블 레벨 방식
+);
+
+SELECT * FROM MEM_PRI;
+
+INSERT INTO MEM_PRI
+VALUES(1, 'user01', 'pass01', '손흥민', '남', '010-1111-2222', null);
+
+INSERT INTO MEM_PRI
+VALUES(1, 'user02', 'pass02', '황희찬', '남', null, null);
+-- ORA-00001: unique constraint (DDL.MEMNO_PK) violated
+-- 기본키에 중복값을 담으려고 할때 (UNIQUE 제약조건에 위배)
+
+INSERT INTO MEM_PRI
+VALUES(null, 'user02', 'pass02' , '황희찬', '남' ,null,null);
+-- ORA-01400: cannot insert NULL into ("DDL"."MEM_PRI"."MEM_NO")
+-- 기본키에 NULL을 담으려고 할때 (NOT NULL  제약조건에 위배됨)
+
+INSERT INTO MEM_PRI
+VALUES(2, 'user02', 'pass02', '황희찬', '남', null, null);
+
+CREATE TABLE MEM_PRI2(
+    MEM_NO NUMBER CONSTRAINT MEMNO_PK PRIMARY KEY, -- 컬럼레벨방식
+    MEM_ID VARCHAR2(20) PRIMARY KEY,
+    MEM_PWD VARCHAR2(20) NOT NULL,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    GENDER CHAR(3) CHECK(GENDER IN ('남','여')),
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50)
+    -- CONSTRAINT MEMNO_PK PRIMARY KEY(MEM_NO)-- 테이블 레벨 방식
+);
+-- ORA-02260: table can have only one primary key
+-- 기본키 하나만 된다!!!
+
+CREATE TABLE MEM_PRI2(
+    MEM_NO NUMBER,
+    MEM_ID VARCHAR2(20),
+    MEM_PWD VARCHAR2(20) NOT NULL,
+    MEM_NAME VARCHAR2(20) NOT NULL,
+    GENDER CHAR(3) CHECK(GENDER IN ('남','여')),
+    PHONE VARCHAR2(13),
+    EMAIL VARCHAR2(50),
+    PRIMARY KEY(MEM_NO, MEM_ID) -- 묶어서 PRIMARY KEY 제약조건 부여 (복합키)
+);
+
+SELECT * FROM MEM_PRI2;
+
+INSERT INTO MEM_PRI2
+VALUES(1, 'user01', 'pass01', '손흥민', null, null, null);
+
+INSERT INTO MEM_PRI2
+VALUES(1, 'user02', 'pass02', '황희찬', null, null, null);
+
+INSERT INTO MEM_PRI2
+VALUES(1, 'user01', 'pass01', '이강인', null, null, null);
+
+INSERT INTO MEM_PRI2
+VALUES(null, 'user01', 'pass01', '이강인', null, null, null);
+-- ORA-01400: cannot insert NULL into ("DDL"."MEM_PRI2"."MEM_NO")
+-- PRIMARY KEY로 묶여있는 각 컬럼에는 절대!!! NULL을 허용하지 않음!!!
+
+-- 복합키 사용 예시 (찜하기, 좋아요, 구독)
+-- 찜하기 : 한 상품은 오로지 한 번만 찜할 수 있음
+-- 어떤 회원이 어떤 상품을 찜하는지에 대한 데이터를 보관하는 테이블
+CREATE TABLE TB_LIKE(
+    MEM_ID VARCHAR2(20),
+    PRODUCT_NAME VARCHAR2(10),
+    LIKE_DATE DATE,
+    PRIMARY KEY(MEM_ID, PRODUCT_NAME)
+);
+
+SELECT * FROM TB_LIKE;
+
+INSERT INTO TB_LIKE
+VALUES('user01', '닭', SYSDATE);
+
+INSERT INTO TB_LIKE
+VALUES('user02', '귤', SYSDATE);
+
+INSERT INTO TB_LIKE
+VALUES('user01', '귤', SYSDATE);
+
+-- 테이블 생성
+/*
+1. 컬럼 최소 7개
+2. PRIMARY KEY 1개 이상
+3. NOT NULL
+4. UNIQUE, CHECK (택1)
+5. 제약조건명 필수!!!
+
+인서트문 적어도 5개씩
+
+자료형 : VARCHAR2, CHAR, NUMBER, DATE
+=> 3개이상 들어가게 테이블 만들어볼 것!!!
+*/
+
+
+
+
 
 
 
