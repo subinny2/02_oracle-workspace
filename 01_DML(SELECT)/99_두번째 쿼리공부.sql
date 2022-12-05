@@ -33,7 +33,7 @@ GROUP BY DEPT_CODE
 HAVING AVG(SALARY) > 2700000
 ORDER BY 1;
 
-
+--------------------------------------------------------------------------------
 
 SELECT DEPT_CODE, 총합 , 평균, 인원수
 FROM (SELECT DEPT_CODE, SUM(SALARY) AS "총합", FLOOR(AVG(SALARY)) AS "평균", COUNT(*) AS "인원수"
@@ -41,7 +41,25 @@ FROM EMPLOYEE
 GROUP BY DEPT_CODE
 ORDER BY 평균 DESC)
 WHERE 평균 > 2700000;
+--------------------------------------------------------------------------------
+-- 서술형 대비
+-- JOIN 종류 (내부조인, 외부조인, 등등 ...) 별 특징, 역할
+-- 함수 종류 (TRIM, ...) 별 각각의 역할
 
+-- 직원의 급여 조회시 각 직급별로 인상해서 조회
+-- J7인 사원은 급여를 10% 인상 (SALARY *1.1)
+-- J6인 사원을 급여를 15% 인상 (SALARY *1.15)
+-- J5인 사원을 급여를 20% 인상 (SALARY *1.2)
+-- 그 외의 사원은 급여를 5% 인상 (SALARY *1.05)
+SELECT EMP_NAME, JOB_CODE, SALARY || '원',
+        DECODE(JOB_CODE,'J7', SALARY *1.1,
+                        'J6', SALARY *1.15,
+                        'J5', SALARY *1.2,
+                        SALARY *1.05) ||'원' AS "인상된 급여"
+FROM EMPLOYEE;
+
+-- '21/09/28' 와 같은 문자열을 가지고 '2021-09-28'로 표현해보기
+-- '210908'와 같은 문자열을 가지고 2021년 9월 8일 표현
 
 
 
