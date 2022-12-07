@@ -71,5 +71,6 @@ FROM DUAL;
 -- 날짜표현시 0을 지우고싶을때 FM사용 -> 한번만 사용해도 뒤에날짜에 있는 0도 지워진다.
 SELECT TO_CHAR(TO_DATE('21/09/08'), 'YYYY"년 "FMMM"월 "DD"일"') AS "날짜"
 FROM DUAL;
+-- FM!!
 
 

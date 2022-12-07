@@ -65,8 +65,7 @@ AND SUBSTR(EMP_NO,8,1) IN ('2','4');
 --    뿐만 아니라 해당 계정에 테이블 생성 같은 것도 되지 않음 ! 왜그럴까 ? 권한이 전혀없기때문.
 
 -- 문제점 1. 사용자 계정 생성 후 최소한의 권한 부여가 안됐다.
--- 조치내용 :
--- GRANT CONNECT, RESOURCE TO SCOTT;
+-- 조치내용 : GRANT CONNECT, RESOURCE TO SCOTT;
 
 
 
