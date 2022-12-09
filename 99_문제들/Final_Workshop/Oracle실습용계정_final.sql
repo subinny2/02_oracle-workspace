@@ -9,7 +9,8 @@ WHERE LENGTH (BOOK_NM) >= 25;
 SELECT WRITER_NM, OFFICE_TELNO, HOME_TELNO, MOBILE_NO
 FROM TB_WRITER
 WHERE MOBILE_NO LIKE '019%'
-AND WRITER_NM LIKE '김%';
+AND WRITER_NM LIKE '김%'
+ORDER BY 1;
 
 -- 5. 저작 형태가 “옮김”에 해당하는 작가들이 총 몇 명인지 계산하는 SQL 구문을 작성하시오. (결과 헤더는
 --    “작가(명)”으로 표시되도록 할 것)
