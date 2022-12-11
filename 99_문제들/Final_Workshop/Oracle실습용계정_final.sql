@@ -119,10 +119,8 @@ ORDER BY 1;
 -- 18. 2006년 1월 기준으로 등록된 지 31년 이상 된 작가 이름을 이름순으로 표시하는 SQL 구문 작성
 SELECT WRITER_NM
 FROM TB_WRITER
-WHERE EXTRACT(YEAR FROM'06/01/01') - EXTRACT(YEAR FROM (REGIST_DATE));
-
-SELECT EXTRACT(YEAR FROM'06/01/01') - EXTRACT(YEAR FROM(REGIST_DATE), 'YYMMDD')
-FROM TB_WRITER;
+WHERE EXTRACT(YEAR FROM TO_DATE('06/01/01')) - EXTRACT(YEAR FROM (REGIST_DATE)) > 31 
+ORDER BY 1;
 
 -- 19. 요즘 들어 다시금 인기를 얻고 있는 '황금가지' 출판사를 위한 기획전을 열려고 한다. '황금가지' 
 --      출판사에서 발행한 도서 중 재고 수량이 10권 미만인 도서명과 가격, 재고상태를 표시하는 SQL 구문작성
@@ -138,11 +136,22 @@ AND STOCK_QTY < 10
 ORDER BY STOCK_QTY DESC, BOOK_NM;
 
 -- 20. '아타트롤' 도서 작가와 역자를 표시하는 SQL 구문을 작성하시오.
---  (결과 헤더는 ‘도서명’,’저자’,’역자’로 표시할 것)ㅡ므므ㅐㅐ
+--  (결과 헤더는 ‘도서명’,’저자’,’역자’로 표시할 것)
+SELECT BOOK_NM "도서명", W.WRITER_NM, T.WRITER_NM
+FROM TB_BOOK
+JOIN TB_WRITER W ON (ISSUE_DATE = REGIST_DATE)
+JOIN TB_BOOK_AUTHOR T ON(WRITER_NO)
+WHERE BOOK_NM = '아타트롤';
+
 
 -- 21. 현재 기준으로 최초 발행일로부터 만 30년이 경과되고, 재고 수량이 90권 이상인 도서에 대해 도서명, 재고
 --      수량, 원래 가격, 20% 인하 가격을 표시하는 SQL 구문을 작성
 --      결과 헤더는 “도서명”, “재고수량”, “가격(Org)”, “가격(New)”로 표시할 것. 재고 수량이 많은 순, 할인 가격이 높은 순, 도서명순으로 표시
+SELECT BOOK_NM "도서명", STOCK_QTY "재고수량", PRICE "가격(Org)", PRICE * 0.8 "가격(New)"
+FROM TB_BOOK
+WHERE STOCK_QTY >= 90
+AND EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM ISSUE_DATE)> 30
+ORDER BY 2 DESC;
 
 
 
@@ -150,6 +159,6 @@ ORDER BY STOCK_QTY DESC, BOOK_NM;
 SELECT * FROM VW_BOOK_TRANSLATOR;
 SELECT * FROM TB_BOOK_TRANSLATOR;
 SELECT * FROM TB_BOOK;
-SELECT * FROM TB_WRITER;
+SELECT * FROM TB_WRITER;-- WHERE SUBSTR(WRITER_NM,1,4) = '고트홀트';
 SELECT * FROM TB_PUBLISHER;
 SELECT * FROM TB_BOOK_AUTHOR;
