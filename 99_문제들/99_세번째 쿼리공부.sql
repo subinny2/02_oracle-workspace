@@ -41,6 +41,44 @@ JOIN TB_JOB ON (JOBNO = JOBCODE);
 -- DCL 뭐냐? 데이터제어언어
 -- 커밋과 롤백이 뭐냐? : TCL언어 트랜젝션제어언어
 
+-- QUIZ3 (JOIN 복습)
+
+-- 아래의 SQL구문은 부서별 월급합계가 15,000,000 을 초과하는 부서를 조회한 것이다.
+-- 그 결과가 올바르지 않다고 할 때 그 원인과 조치사항
+SELECT DEPT_CODE, SUM(SALARY)
+FROM EMPLOYEE
+WHERE SALARY > 15000000
+GROUP BY DEPT_CODE;
+
+
+SELECT DEPT_CODE, SUM(SALARY)
+FROM EMPLOYEE
+GROUP BY DEPT_CODE
+HAVING SUM(SALARY) > 15000000;
+
+-- QUIZ 4 (제약조건)
+CREATE TABLE QUIZ4(
+    QNO NUMBER PRIMARY KEY,
+    QNAME VARCHAR2(10),
+    SCORE NUMBER
+);
+
+INSERT INTO QUIZ4 VALUES(1, '퀴즈1번', 30);
+INSERT INTO QUIZ4 VALUES(1, '퀴즈2번', 50);
+-- 문제점
+-- PRIMARY KEY 의 제약조건 때문이다. => PRIMARY KEY는 NOT NULL, UNIQUE 의 제약조건을 가진다.
+
+-- JOIN => DECODE
+-- J7인 사원은 급여를 10% 인상
+-- J6인 사원은 급여를 15% 인상
+
+-- '21/09/28' 문자열을 '2021-09-28'
+-- '210908' 2021년 9월 8일
+
+-- 초급개발자, 중급개발자, 고급개발자
+-- CASE WHEN
+
+
 
 
 
