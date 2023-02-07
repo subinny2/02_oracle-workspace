@@ -6,7 +6,7 @@ INSERT INTO TB_MEMBER VALUES(4, 'huiwhite789@naver.com', 'userpwd04', '최희승', 
 INSERT INTO TB_MEMBER VALUES(5, 'admin4@naver.com', 'adminpwd04', '관리자4', '관리자4', 'F', SYSDATE, 'A', '넷플릭스/티빙/왓챠/웨이브/디지니플러스/쿠팡플레이/애플티비', 'N');
 
 -- TB_CONTENT
-INSERT INTO TB_CONTENT VALUES('D00'||TO_CHAR(SEQ_CONT_NO.NEXTVAL()), '일타 스캔들', '사교육 전쟁터에서 펼쳐지는 국가대표 반찬가게 열혈사장과 대한민국 수학일타 강사의 달콤 쌉싸름한 로맨스','드라마', TO_DATE(2023,'YYYY'), '한국', '15세이상', 5, NULL, 123, 'https://www.tving.com/contents/P001685600', NULL, '넷플릭스/티빙', 'https://image.tving.com/upload/cms/caip/CAIP0900/P001685600.jpg/dims/resize/F_webp,480');
+INSERT INTO TB_CONTENT VALUES('D00'||TO_CHAR(SEQ_CONT_NO.NEXTVAL), '일타 스캔들', '사교육 전쟁터에서 펼쳐지는 국가대표 반찬가게 열혈사장과 대한민국 수학일타 강사의 달콤 쌉싸름한 로맨스','드라마', TO_DATE(2023,'YYYY'), '한국', '15세이상', 5, NULL, 123, 'https://www.tving.com/contents/P001685600', NULL, '넷플릭스/티빙', 'https://image.tving.com/upload/cms/caip/CAIP0900/P001685600.jpg/dims/resize/F_webp,480');
 INSERT INTO TB_CONTENT VALUES(2, '대행사', 'VC그룹 최초로 여성 임원이된 ''고아인''이 최초를 넘어 최고의 위치까지 자신의 커리어를 만들어가는 모습을 그린 우아하게 처절한 광고인들의 전투극','드라마', 2023, '한국', '15세이상', 4, NULL, 15, 'https://www.tving.com/contents/P001683307', NULL, '티빙', 'https://image.tving.com/upload/cms/caip/CAIP0900/P001683307.jpg/dims/resize/F_webp,480');
 INSERT INTO TB_CONTENT VALUES(3, '술꾼 도시 여자들2', '하루 끝의 술 한잔이 인생의 신념인 세 여자의 일상을 그린 본격 기승전술 드라마 시즌2','드라마', 2022, '한국', '청소년관람불가', 4.1, NULL, 15, 'https://www.tving.com/contents/P001651316', NULL, '티빙', 'https://image.tving.com/upload/cms/caip/CAIP0900/P001651316.jpg/dims/resize/F_webp,480');
 INSERT INTO TB_CONTENT VALUES(4, '사랑의 이해', '각기 다른 이해를 가진 이들이 만나 진정한 ''사랑''의 의미를 이해하게 되는 이야기를 담은 멜로드라마','드라마', 2022, '한국', '15세이상', 5, NULL, 15, 'https://www.tving.com/contents/P001677673', NULL, '넷플릭스/티빙', 'https://image.tving.com/upload/cms/caip/CAIP0900/P001677673.jpg/dims/resize/F_webp,480');
@@ -28,21 +28,17 @@ INSERT INTO TB_CONTENT VALUES(19, '치아문단순적소미호', '여고생 천샤오시가 19년�
 INSERT INTO TB_CONTENT VALUES(20, '지속 가능한 사랑입니까?', '요가 강사인 딸과 홀로 된 아버지. 두 사람이 결혼이라는 인생에 도전하며 펼쳐지는 사랑 이야기를 그린 드라마', '드라마', 2022, '일본', '15세이상', 4.6, NULL, 45621322, 'URL', NULL, '왓챠', 'URL');
 
 -- TB_DIRECTOR
-INSERT INTO TB_DIRECTOR VALUES(1, '이응복', 14, '태양의 후예'); -- 태양의 후예, 도깨비 컨텐츠 번호를 여러개 써야하는데.. ? 
-INSERT INTO TB_DIRECTOR VALUES(1, '이응복', 7, '도깨비');
-INSERT INTO TB_DIRECTOR VALUES(2, '백상훈', 14, '태양의 후예');
-INSERT INTO TB_DIRECTOR VALUES(3, '박신우', 10, '남자친구');
-INSERT INTO TB_DIRECTOR VALUES(4, '안길호', 9, '더 글로리');
-INSERT INTO TB_DIRECTOR VALUES(5, '정대윤', 15, '재벌집 막내아들');
+INSERT INTO TB_DIRECTOR VALUES(1, '이응복', 14); -- 태양의 후예, 도깨비 컨텐츠 번호를 여러개 써야하는데.. ? 
+INSERT INTO TB_DIRECTOR VALUES(1, '이응복', 7);
+INSERT INTO TB_DIRECTOR VALUES(2, '백상훈', 14);
+INSERT INTO TB_DIRECTOR VALUES(3, '박신우', 10);
+INSERT INTO TB_DIRECTOR VALUES(4, '안길호', 9);
+INSERT INTO TB_DIRECTOR VALUES(5, '정대윤', 15);
 
 -- TB_ACTOR
-INSERT INTO TB_ACTOR VALUES(1, '전도연', 1, '일타 스캔들');
-INSERT INTO TB_ACTOR VALUES(1, '전도연', 8, '굿 와이프'); -- 배우 넘버는 PRIMARY KEY 중복 불가.. ?
-INSERT INTO TB_ACTOR VALUES(1, '전도연', 12, '인간실격');
-INSERT INTO TB_ACTOR VALUES(2, '송혜교', 9, '더 글로리');
-INSERT INTO TB_ACTOR VALUES(2, '송혜교', 10, '남자친구');
-INSERT INTO TB_ACTOR VALUES(2, '송혜교', 11, '그 겨울 바람이 분다');
-INSERT INTO TB_ACTOR VALUES(2, '송혜교', 14, '태양의 후예');
+INSERT INTO TB_ACTOR VALUES(1, '전도연');
+INSERT INTO TB_ACTOR VALUES(2, '송혜교');
+
 INSERT INTO TB_ACTOR VALUES(3, '심월', 19, '치아문단순적소미호');
 INSERT INTO TB_ACTOR VALUES(4, '이보영', 2, '대행사');
 INSERT INTO TB_ACTOR VALUES(5, '손나은', 2, '대행사');
